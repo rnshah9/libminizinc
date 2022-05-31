@@ -1,0 +1,7 @@
+project: rnshah9/libminizinc
+target: mzn2doc
+tests: null
+
+cmds:
+  - cmd: /repo/build/mzn2doc @@
+    filepath: /test.mzn
