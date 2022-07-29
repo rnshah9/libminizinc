@@ -2,5 +2,4 @@ project: libminizinc
 target: mzn2doc
 
 cmds:
-  - cmd: /repo/build/mzn2doc /test.mzn
-    filepath: /test.mzn
+  - cmd: /install/bin/mzn2doc @@
