@@ -3,3 +3,4 @@ target: mzn2doc
 
 cmds:
   - cmd: /install/bin/mzn2doc @@
+    filepath: /test.mzn
