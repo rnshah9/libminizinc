@@ -4,6 +4,48 @@ MiniZinc Change Log
 For detailed bug reports consult the issue tracker at
 https://github.com/MiniZinc/libminizinc/issues.
 
+.. _v2.6.4:
+
+`Version 2.6.4 <https://github.com/MiniZinc/MiniZincIDE/releases/tag/2.6.4>`__
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+(released 23 June 2022)
+
+Changes:
+^^^^^^^^
+
+-  All considered function items are now checked to ensure that they can be
+   correctly evaluated or flattened. This means that, to avoid a type error,
+   all functions must have a function body or, in case of a ``var`` function,
+   be valid FlatZinc builtins (i.e., they are predicates/return ``var bool``,
+   and their arguments are valid FlatZinc types) or, in case of a ``par``
+   function, must have an internal definition in the MiniZinc compiler.
+   Functions that are defined with ``var`` types for convient use in output
+   can be annotated ``output_only``. The compiler will check that a valid
+   ``par`` version of this function is available.
+
+Bug fixes:
+^^^^^^^^^^
+
+-  Fix a bug in the type checker where unsupported coercions could cause crashes.
+   (:bugref:`581`).
+-  Fix a bug in the flattening of binary operators when types of flattened
+   arguments match a different version function than matched by the type
+   checker. (:bugref:`588`)
+-  Fix a bug where statistics without a ``%%%mzn-stat-end`` were not always
+   printed in ``--json-stream`` mode.
+-  Fix a bug in the task decomposition of the cumulative global constraint where
+   resource requirement would not always be correctly be ignored when the task 
+   duration is zero. (:bugref:`589`)
+-  Fix handling of float values in ``.mpc`` parameter configuration files.
+-  Fix crash in SCIP plugin due to incorrect loading of ``SCIPinfinity`` symbol.
+-  Fix crash in CBC when there is a heuristic solution but no best solution
+   (:bugref:`592`).
+
+Changes in the IDE:
+^^^^^^^^^^^^^^^^^^^
+-  Ensure the extra parameter filter is cleared when the textbox is cleared.
+
 .. _v2.6.3:
 
 `Version 2.6.3 <https://github.com/MiniZinc/MiniZincIDE/releases/tag/2.6.3>`__

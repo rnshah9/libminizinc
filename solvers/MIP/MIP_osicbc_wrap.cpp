@@ -231,7 +231,7 @@ void MIPosicbcWrapper::doAddVars(size_t n, double* obj, double* lb, double* ub,
   CoinPackedVector cpv;
   vector<CoinPackedVectorBase*> pCpv(n, &cpv);
   _osi.addCols(static_cast<int>(n), pCpv.data(), lb, ub, obj);  // setting integer & names later
-  //   status = CBCnewcols (env, lp, n, obj, lb, ub, &ctype[0], &pcNames[0]);
+  //   status = CBCnewcols (env, lp, n, obj, lb, ub, ctype.data(), pcNames.data());
   //   wrapAssert( !status,  "Failed to declare variables." );
 }
 
@@ -476,7 +476,10 @@ CbcEventHandler::CbcAction MyEventHandler3::event(CbcEvent whichEvent) {
         // If preprocessing was done solution will be to processed model
         //       int numberColumns = model_->getNumCols();
         const double* bestSolution = model_->bestSolution();
-        assert(bestSolution);
+        if (bestSolution == nullptr) {
+          // Could happen if we only have heuristic solution?
+          return noAction;
+        }
         //       printf("value of solution is %g\n",model_->getObjValue());
 
         // Trying to obtain solution for the original model:
@@ -835,7 +838,7 @@ void MIPosicbcWrapper::solve() {  // Move into ancestor?
     /// Solution callback
     output.nCols = static_cast<int>(colObj.size());
     //    x.resize(output.nCols);
-    //    output.x = &x[0];
+    //    output.x = x.data();
 
     if (_options->flagIntermediate && (cbui.solcbfn != nullptr)) {
       // Event handler. Should be after CbcMain0()?
@@ -945,7 +948,7 @@ void MIPosicbcWrapper::solve() {  // Move into ancestor?
       }
       cerr << "'..." << endl;
     }
-    CbcMain(static_cast<int>(cbc_argc), &cbc_argv[0], model);
+    CbcMain(static_cast<int>(cbc_argc), cbc_argv.data(), model);
     // callCbc(_options->cbcCmdOptions, model);
 //     callCbc1(cbcCmdOptions, model, callBack);
 // What is callBack() for?    TODO
