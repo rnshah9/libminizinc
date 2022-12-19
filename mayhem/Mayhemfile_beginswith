@@ -1,0 +1,5 @@
+project: libminizinc
+target: beginswith
+
+cmds:
+  - cmd: /fuzz_beginswith
